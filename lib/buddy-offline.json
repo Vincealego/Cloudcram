@@ -1,0 +1,166 @@
+[
+ {
+  "keys": [
+   "iaas",
+   "paas",
+   "saas",
+   "service model"
+  ],
+  "title": "IaaS, PaaS, SaaS",
+  "text": "Think of M-Pesa. Using the M-Pesa app is SaaS: Safaricom runs everything and you just use it. Renting an empty shop stall and bringing your own fridge and staff is IaaS: the landlord gives the space, you run the rest. PaaS sits in the middle, like a stall that already has shelves and electricity, and you only bring your goods."
+ },
+ {
+  "keys": [
+   "shared",
+   "responsib"
+  ],
+  "title": "Shared responsibility",
+  "text": "A landlord secures the building and the gate, but you lock your own shop door. In the cloud, Microsoft secures the datacenters; you always stay responsible for your data, accounts and access. How much else you manage depends on IaaS, PaaS or SaaS."
+ },
+ {
+  "keys": [
+   "opex",
+   "capex",
+   "consumption",
+   "pay as you go"
+  ],
+  "title": "CapEx vs OpEx",
+  "text": "Buying a router and generator outright is CapEx: a big upfront cost. Buying mobile data bundles is OpEx: you pay as you use, and top up when needed. Cloud consumption pricing works like data bundles."
+ },
+ {
+  "keys": [
+   "elastic",
+   "scal"
+  ],
+  "title": "Elasticity and scalability",
+  "text": "A market trader hires extra helpers on market day and sends them home afterwards. Elasticity does that automatically for your app: more capacity during a rush, less when it’s quiet, so you only pay for what you need."
+ },
+ {
+  "keys": [
+   "zone",
+   "region",
+   "availability",
+   "redundan"
+  ],
+  "title": "Regions and Availability Zones",
+  "text": "A bakery with kitchens in separate parts of town can keep selling if one loses power. A region is a city-sized area; Availability Zones are separate datacenters inside it, each with its own power and cooling."
+ },
+ {
+  "keys": [
+   "blob",
+   "storage"
+  ],
+  "title": "Blob Storage",
+  "text": "A big storeroom where you keep boxes of different shapes: photos, videos, PDFs. Blob Storage holds unstructured files like these, while a database is more like an organised ledger book."
+ },
+ {
+  "keys": [
+   "entra",
+   "identity",
+   "mfa",
+   "sso",
+   "active directory"
+  ],
+  "title": "Microsoft Entra ID",
+  "text": "Your M-Pesa PIN plus the SMS confirmation is a good picture of multifactor authentication: two different proofs it’s really you. Entra ID is the cloud identity service that checks who people are and what they may access."
+ },
+ {
+  "keys": [
+   "policy",
+   "governance",
+   "compliance"
+  ],
+  "title": "Azure Policy",
+  "text": "A town council by-law says, for example, where stalls may be set up. Azure Policy is the by-law book for your cloud: it can block or flag resources that break your organisation’s rules."
+ },
+ {
+  "keys": [
+   "lock"
+  ],
+  "title": "Resource locks",
+  "text": "A padlock on the cash box: even people with the key to the shop can’t accidentally empty it. A resource lock stops accidental deletion or change, even by users who have permission."
+ },
+ {
+  "keys": [
+   "serverless",
+   "function"
+  ],
+  "title": "Serverless / Azure Functions",
+  "text": "Like paying a motorbike courier per delivery instead of owning a delivery van. Serverless runs your code only when something triggers it, and you don’t manage the server."
+ },
+ {
+  "keys": [
+   "hybrid",
+   "private cloud",
+   "public cloud"
+  ],
+  "title": "Public, private, hybrid",
+  "text": "A public cloud is like using M-Pesa agents everyone shares. A private cloud is a till kept only in your own shop. Hybrid is both: sensitive records stay in your own till, while busy-season sales go through the shared agents."
+ },
+ {
+  "keys": [
+   "pair",
+   "sovereign",
+   "hierarchy",
+   "subscription",
+   "management group",
+   "resource group"
+  ],
+  "title": "Regions and scopes",
+  "text": "Think of a supermarket chain: each branch is a region, and two sister branches are a region pair that take turns closing for maintenance. Scopes nest like the company, then a regional office, then a department: management group, subscription, resource group."
+ },
+ {
+  "keys": [
+   "vnet",
+   "virtual network",
+   "expressroute",
+   "vpn",
+   "peering",
+   "endpoint"
+  ],
+  "title": "Networking",
+  "text": "A virtual network is your private compound. Peering is a gate between two compounds, a VPN is a trusted tunnel through the public road, and ExpressRoute is your own private road. A private endpoint is a side door only your staff can use."
+ },
+ {
+  "keys": [
+   "tier",
+   "lrs",
+   "zrs",
+   "grs",
+   "archive",
+   "redundan"
+  ],
+  "title": "Storage tiers and copies",
+  "text": "Hot is goods on the shop counter, cool is the back shelf, archive is the locked warehouse that takes hours to open. Redundancy is keeping copies: LRS in one room, ZRS in several buildings, GRS in another town."
+ },
+ {
+  "keys": [
+   "zero trust",
+   "defense",
+   "defence",
+   "defender",
+   "rbac",
+   "role"
+  ],
+  "title": "Security basics",
+  "text": "Zero Trust is a guard who checks every ID, every time, even for regulars. Defense in depth is the gate, the door, the safe and the CCTV together. RBAC gives the cashier a till key but not the safe key."
+ },
+ {
+  "keys": [
+   "tag",
+   "reservation",
+   "cost",
+   "advisor",
+   "service health",
+   "monitor",
+   "arc",
+   "arm",
+   "iac",
+   "template",
+   "cli",
+   "purview"
+  ],
+  "title": "Cost, tools and monitoring",
+  "text": "Tags are labels on your stock boxes so you know which department spent what. Reservations are like prepaying a year of airtime for a discount. Azure Advisor is a friendly consultant, Service Health tells you about outages, and ARM templates are your written recipe so every branch opens identically."
+ }
+]

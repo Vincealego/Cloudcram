@@ -1,0 +1,29 @@
+{
+  "name": "cloudcram",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "dev:webpack": "next dev --webpack"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest",
+    "@supabase/supabase-js": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "zod": "latest",
+    "@tailwindcss/postcss": "latest",
+    "lucide-react": "latest"
+  },
+  "devDependencies": {
+    "typescript": "latest",
+    "tailwindcss": "latest",
+    "@types/react": "latest",
+    "@types/node": "latest",
+    "vitest": "latest",
+    "@types/react-dom": "latest"
+  }
+}

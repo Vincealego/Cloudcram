@@ -1,0 +1,587 @@
+[
+ {
+  "id": "seed-0",
+  "domain": 0,
+  "stem": "In an IaaS deployment, who is responsible for patching the guest operating system?",
+  "options": [
+   "Nobody; it patches itself",
+   "The customer",
+   "Microsoft",
+   "Both equally, always"
+  ],
+  "correct": 1,
+  "explanation": "With IaaS, Microsoft manages the physical datacenter, network and hypervisor. You manage the OS, patches, apps and data. With PaaS the OS moves to Microsoft; with SaaS almost everything does."
+ },
+ {
+  "id": "seed-1",
+  "domain": 0,
+  "stem": "A business pays only for the compute it uses each month, with no upfront hardware purchase. Which expense type is this?",
+  "options": [
+   "Operational expenditure (OpEx)",
+   "Reserved depreciation",
+   "Fixed licensing",
+   "Capital expenditure (CapEx)"
+  ],
+  "correct": 0,
+  "explanation": "The consumption-based model turns upfront CapEx into pay-as-you-go OpEx. You are billed for what you use."
+ },
+ {
+  "id": "seed-2",
+  "domain": 0,
+  "stem": "An online shop’s traffic spikes on a sale day, so extra resources are added automatically and removed afterwards. Which cloud benefit is this?",
+  "options": [
+   "Data sovereignty",
+   "Elasticity",
+   "Compliance",
+   "Disaster recovery"
+  ],
+  "correct": 1,
+  "explanation": "Elasticity (a form of scalability) means resources grow and shrink automatically with demand, so you don’t pay for idle capacity."
+ },
+ {
+  "id": "seed-3",
+  "domain": 0,
+  "stem": "Which of these is an example of Software as a Service (SaaS)?",
+  "options": [
+   "Azure Kubernetes Service",
+   "Microsoft 365",
+   "Azure Virtual Machines",
+   "Azure Virtual Network"
+  ],
+  "correct": 1,
+  "explanation": "Microsoft 365 is finished software you use over the internet. Virtual Machines are IaaS; the other two are infrastructure and container services you configure yourself."
+ },
+ {
+  "id": "seed-4",
+  "domain": 1,
+  "stem": "Which Azure feature protects against the failure of a single datacenter inside one region?",
+  "options": [
+   "Management groups",
+   "Availability Zones",
+   "Resource groups",
+   "Tags"
+  ],
+  "correct": 1,
+  "explanation": "Availability Zones are physically separate datacenter locations within a region, each with independent power, cooling and networking."
+ },
+ {
+  "id": "seed-5",
+  "domain": 1,
+  "stem": "Which Azure service is designed for storing unstructured data such as images and videos?",
+  "options": [
+   "Azure Virtual Network",
+   "Azure Policy",
+   "Azure SQL Database",
+   "Azure Blob Storage"
+  ],
+  "correct": 3,
+  "explanation": "Blob Storage holds massive amounts of unstructured data (objects). Azure SQL Database is for relational data."
+ },
+ {
+  "id": "seed-6",
+  "domain": 1,
+  "stem": "Which Azure service lets you run small pieces of code in response to events without managing servers?",
+  "options": [
+   "Azure Virtual Desktop",
+   "Azure ExpressRoute",
+   "Azure Bastion",
+   "Azure Functions"
+  ],
+  "correct": 3,
+  "explanation": "Azure Functions is serverless and event-driven. You write the code; Azure handles the infrastructure and scaling."
+ },
+ {
+  "id": "seed-7",
+  "domain": 1,
+  "stem": "Which service provides a private, isolated network in Azure so your resources can talk to each other securely?",
+  "options": [
+   "Azure Advisor",
+   "Azure Virtual Network",
+   "Azure Monitor",
+   "Azure DNS"
+  ],
+  "correct": 1,
+  "explanation": "An Azure Virtual Network (VNet) is your private network in Azure, used for communication between Azure resources, the internet and on-premises networks."
+ },
+ {
+  "id": "seed-8",
+  "domain": 2,
+  "stem": "Which service lets you enforce rules, such as allowing resources to be created only in approved regions?",
+  "options": [
+   "Azure Monitor",
+   "Azure Advisor",
+   "Azure Policy",
+   "Microsoft Defender for Cloud"
+  ],
+  "correct": 2,
+  "explanation": "Azure Policy evaluates resources against your rules and can deny or flag non-compliant ones. It is about governance and compliance."
+ },
+ {
+  "id": "seed-9",
+  "domain": 2,
+  "stem": "Which feature helps stop a critical resource from being accidentally deleted?",
+  "options": [
+   "Azure Policy initiative",
+   "Azure Advisor",
+   "Availability set",
+   "Resource lock"
+  ],
+  "correct": 3,
+  "explanation": "A resource lock (CanNotDelete or ReadOnly) overrides user permissions to prevent accidental deletion or changes."
+ },
+ {
+  "id": "seed-10",
+  "domain": 2,
+  "stem": "Which service provides single sign-on and multifactor authentication for users and apps?",
+  "options": [
+   "Azure Arc",
+   "Microsoft Entra ID",
+   "Azure Key Vault",
+   "Azure Firewall"
+  ],
+  "correct": 1,
+  "explanation": "Microsoft Entra ID (formerly Azure Active Directory) is Microsoft’s cloud identity service, offering SSO, MFA and Conditional Access."
+ },
+ {
+  "id": "seed-11",
+  "domain": 2,
+  "stem": "Which tool estimates the monthly cost of Azure resources you plan to deploy?",
+  "options": [
+   "Azure Monitor",
+   "Azure Service Health",
+   "Azure Advisor",
+   "Pricing calculator"
+  ],
+  "correct": 3,
+  "explanation": "The Pricing calculator estimates costs for planned services. The TCO calculator instead compares on-premises costs with Azure."
+ },
+ {
+  "domain": 0,
+  "stem": "A bank must keep sensitive data in its own datacenter but wants Azure for seasonal workloads. Which cloud model fits?",
+  "options": [
+   "Multicloud",
+   "Hybrid cloud",
+   "Public cloud",
+   "Private cloud"
+  ],
+  "correct": 1,
+  "explanation": "A hybrid cloud combines private or on-premises resources with a public cloud and lets workloads move between them.",
+  "id": "seed-12"
+ },
+ {
+  "domain": 0,
+  "stem": "Which statement best describes serverless computing?",
+  "options": [
+   "Your code runs on demand while the provider manages the servers",
+   "A fixed set of servers runs all day",
+   "You patch and manage the VMs",
+   "You buy and rack your own hardware"
+  ],
+  "correct": 0,
+  "explanation": "With serverless (such as Azure Functions) you focus on code, the platform handles infrastructure and scaling, and billing follows usage.",
+  "id": "seed-13"
+ },
+ {
+  "domain": 0,
+  "stem": "What does a higher SLA percentage (for example 99.99% instead of 99.9%) mean?",
+  "options": [
+   "Less allowed downtime",
+   "More regions",
+   "Lower prices",
+   "More allowed downtime"
+  ],
+  "correct": 0,
+  "explanation": "An SLA states expected uptime. A higher percentage means less downtime is allowed per month or year.",
+  "id": "seed-14"
+ },
+ {
+  "domain": 0,
+  "stem": "Which is an example of manageability in the cloud?",
+  "options": [
+   "Buying extra servers each year",
+   "Deploying resources from templates and monitoring them with alerts",
+   "Replacing hardware every three years",
+   "Printing server logs"
+  ],
+  "correct": 1,
+  "explanation": "Manageability means managing and monitoring resources through automation, templates, dashboards and alerts.",
+  "id": "seed-15"
+ },
+ {
+  "domain": 0,
+  "stem": "Which of these is Platform as a Service (PaaS)?",
+  "options": [
+   "Azure App Service",
+   "Dynamics 365",
+   "Microsoft 365",
+   "Azure Virtual Machines"
+  ],
+  "correct": 0,
+  "explanation": "App Service lets you deploy web apps without managing the OS. VMs are IaaS; Microsoft 365 and Dynamics 365 are SaaS.",
+  "id": "seed-16"
+ },
+ {
+  "domain": 0,
+  "stem": "A company wants to move a legacy app to the cloud unchanged and keep full control of the operating system. Which service type fits best?",
+  "options": [
+   "Serverless",
+   "SaaS",
+   "PaaS",
+   "IaaS"
+  ],
+  "correct": 3,
+  "explanation": "IaaS gives you virtual machines where you control the OS and software, which suits lift-and-shift migrations.",
+  "id": "seed-17"
+ },
+ {
+  "domain": 1,
+  "stem": "What is a benefit of Azure region pairs?",
+  "options": [
+   "VMs are copied automatically",
+   "Both regions share one datacenter",
+   "Data transfer between them is always free",
+   "Updates are staged one at a time and recovery is prioritised across the pair"
+  ],
+  "correct": 3,
+  "explanation": "Paired regions are in the same geography. Planned updates roll out sequentially and one region is prioritised in a wide outage.",
+  "id": "seed-18"
+ },
+ {
+  "domain": 1,
+  "stem": "Azure Government is an example of what?",
+  "options": [
+   "A resource group",
+   "An availability zone",
+   "A management group",
+   "A sovereign region"
+  ],
+  "correct": 3,
+  "explanation": "Sovereign regions are isolated instances of Azure, such as Azure Government, built for specific compliance or legal needs.",
+  "id": "seed-19"
+ },
+ {
+  "domain": 1,
+  "stem": "Which lists Azure scopes from largest to smallest?",
+  "options": [
+   "Management group, subscription, resource group, resource",
+   "Resource group, subscription, management group, resource",
+   "Subscription, management group, resource group, resource",
+   "Resource, resource group, management group, subscription"
+  ],
+  "correct": 0,
+  "explanation": "Management groups contain subscriptions, subscriptions contain resource groups, and resource groups contain resources.",
+  "id": "seed-20"
+ },
+ {
+  "domain": 1,
+  "stem": "What happens to the resources inside a resource group when you delete the group?",
+  "options": [
+   "They are all deleted",
+   "They move to a default group",
+   "Nothing happens to them",
+   "Only empty ones are deleted"
+  ],
+  "correct": 0,
+  "explanation": "Deleting a resource group deletes every resource in it, so group resources that share a lifecycle.",
+  "id": "seed-21"
+ },
+ {
+  "domain": 1,
+  "stem": "Which compute option packages an app with its dependencies and shares the host operating system kernel?",
+  "options": [
+   "Azure Virtual Desktop",
+   "Availability sets",
+   "Virtual Machine Scale Sets",
+   "Containers"
+  ],
+  "correct": 3,
+  "explanation": "Containers are lighter than VMs because they share the host OS kernel rather than each running a full guest OS.",
+  "id": "seed-22"
+ },
+ {
+  "domain": 1,
+  "stem": "Which service automatically adds or removes identical VMs as load changes?",
+  "options": [
+   "Azure Bastion",
+   "Availability set",
+   "Azure Arc",
+   "Virtual Machine Scale Sets"
+  ],
+  "correct": 3,
+  "explanation": "Virtual Machine Scale Sets manage a group of identical load-balanced VMs and can autoscale them.",
+  "id": "seed-23"
+ },
+ {
+  "domain": 1,
+  "stem": "Which VM option spreads VMs across fault domains and update domains inside a datacenter?",
+  "options": [
+   "Azure DNS",
+   "Availability sets",
+   "Resource locks",
+   "Tags"
+  ],
+  "correct": 1,
+  "explanation": "Availability sets reduce the impact of hardware failures and maintenance by separating VMs into fault and update domains.",
+  "id": "seed-24"
+ },
+ {
+  "domain": 1,
+  "stem": "Which service connects your on-premises network to Azure over a private connection that does not use the public internet?",
+  "options": [
+   "Virtual network peering",
+   "ExpressRoute",
+   "Azure DNS",
+   "VPN Gateway"
+  ],
+  "correct": 1,
+  "explanation": "ExpressRoute uses a private connection through a connectivity provider. VPN Gateway sends encrypted traffic over the internet.",
+  "id": "seed-25"
+ },
+ {
+  "domain": 1,
+  "stem": "What does a private endpoint do?",
+  "options": [
+   "Gives an Azure service a private IP address in your virtual network",
+   "Encrypts managed disks",
+   "Assigns tags to resources",
+   "Creates a VPN to another cloud"
+  ],
+  "correct": 0,
+  "explanation": "A private endpoint brings a service such as Storage into your VNet through a private IP, keeping traffic off the public internet.",
+  "id": "seed-26"
+ },
+ {
+  "domain": 1,
+  "stem": "Which blob access tier has the lowest storage cost for rarely used data, but retrieval can take hours?",
+  "options": [
+   "Hot",
+   "Cool",
+   "Cold",
+   "Archive"
+  ],
+  "correct": 3,
+  "explanation": "Archive is the cheapest to store, but data must be rehydrated before use. Hot suits frequent access.",
+  "id": "seed-27"
+ },
+ {
+  "domain": 1,
+  "stem": "Which redundancy option copies data synchronously across three availability zones in the primary region?",
+  "options": [
+   "GRS",
+   "ZRS",
+   "RA-GRS",
+   "LRS"
+  ],
+  "correct": 1,
+  "explanation": "Zone-redundant storage (ZRS) spreads copies across zones. LRS keeps all copies in one datacenter.",
+  "id": "seed-28"
+ },
+ {
+  "domain": 1,
+  "stem": "Which Azure Storage service offers managed file shares you can access over SMB?",
+  "options": [
+   "Azure Files",
+   "Blob Storage",
+   "Queue Storage",
+   "Table Storage"
+  ],
+  "correct": 0,
+  "explanation": "Azure Files provides fully managed cloud file shares accessible with SMB (and NFS).",
+  "id": "seed-29"
+ },
+ {
+  "domain": 1,
+  "stem": "Which offline physical device helps move very large amounts of data into Azure?",
+  "options": [
+   "Azure File Sync",
+   "AzCopy",
+   "Azure Storage Explorer",
+   "Azure Data Box"
+  ],
+  "correct": 3,
+  "explanation": "Azure Data Box is a shipped storage device for bulk transfers. AzCopy and Storage Explorer transfer over the network.",
+  "id": "seed-30"
+ },
+ {
+  "domain": 1,
+  "stem": "Which Azure capability controls who can perform which actions at a chosen scope?",
+  "options": [
+   "Azure RBAC",
+   "Resource locks",
+   "Azure Policy",
+   "Tags"
+  ],
+  "correct": 0,
+  "explanation": "Role-based access control assigns roles to users, groups or apps at a scope. Policy controls resource properties instead.",
+  "id": "seed-31"
+ },
+ {
+  "domain": 1,
+  "stem": "Which is an example of passwordless authentication?",
+  "options": [
+   "A shared password",
+   "Windows Hello for Business",
+   "Password plus SMS code",
+   "Security questions"
+  ],
+  "correct": 1,
+  "explanation": "Passwordless methods include Windows Hello for Business, FIDO2 security keys and the Microsoft Authenticator app.",
+  "id": "seed-32"
+ },
+ {
+  "domain": 1,
+  "stem": "Which feature can require MFA only when a user signs in from an unfamiliar location?",
+  "options": [
+   "Resource locks",
+   "Availability zones",
+   "Microsoft Entra Conditional Access",
+   "Azure Advisor"
+  ],
+  "correct": 2,
+  "explanation": "Conditional Access applies if-then policies using signals such as location, device and risk.",
+  "id": "seed-33"
+ },
+ {
+  "domain": 1,
+  "stem": "Which principle best describes Zero Trust?",
+  "options": [
+   "Verify explicitly, use least privilege and assume breach",
+   "Trust internal users only",
+   "Trust everything inside the network",
+   "Block all traffic"
+  ],
+  "correct": 0,
+  "explanation": "Zero Trust treats every request as untrusted until verified, regardless of where it comes from.",
+  "id": "seed-34"
+ },
+ {
+  "domain": 1,
+  "stem": "What does the defense-in-depth model recommend?",
+  "options": [
+   "Relying on a single strong firewall",
+   "Hiding all resources",
+   "Using multiple layers of protection",
+   "Encrypting data only"
+  ],
+  "correct": 2,
+  "explanation": "Defense in depth layers physical, identity, perimeter, network, compute, application and data protections so one failure is not fatal.",
+  "id": "seed-35"
+ },
+ {
+  "domain": 1,
+  "stem": "Which service provides security posture management and threat protection for Azure and hybrid workloads?",
+  "options": [
+   "Microsoft Defender for Cloud",
+   "Azure Advisor",
+   "Azure Monitor",
+   "Azure DNS"
+  ],
+  "correct": 0,
+  "explanation": "Microsoft Defender for Cloud assesses security posture, recommends fixes and protects workloads.",
+  "id": "seed-36"
+ },
+ {
+  "domain": 2,
+  "stem": "Which option gives a discount for committing to one or three years of Azure resource use?",
+  "options": [
+   "Tags",
+   "Resource locks",
+   "Azure Advisor",
+   "Azure Reservations"
+  ],
+  "correct": 3,
+  "explanation": "Reservations trade a one- or three-year commitment for lower prices than pay-as-you-go.",
+  "id": "seed-37"
+ },
+ {
+  "domain": 2,
+  "stem": "What is a common use of tags?",
+  "options": [
+   "Organising resources and allocating costs, for example by department",
+   "Encrypting data",
+   "Preventing deletion",
+   "Creating networks"
+  ],
+  "correct": 0,
+  "explanation": "Tags are name-value pairs that help organise resources and group costs in reports.",
+  "id": "seed-38"
+ },
+ {
+  "domain": 2,
+  "stem": "Which service helps you discover, classify and govern data across on-premises, multicloud and SaaS?",
+  "options": [
+   "Microsoft Purview",
+   "Azure Arc",
+   "Azure DNS",
+   "Azure Monitor"
+  ],
+  "correct": 0,
+  "explanation": "Microsoft Purview provides data governance, protection and compliance tools.",
+  "id": "seed-39"
+ },
+ {
+  "domain": 2,
+  "stem": "Which service extends Azure management to servers and Kubernetes outside Azure?",
+  "options": [
+   "Azure Arc",
+   "Azure Bastion",
+   "Azure Advisor",
+   "Azure Front Door"
+  ],
+  "correct": 0,
+  "explanation": "Azure Arc projects on-premises and other-cloud resources into Azure so you can manage them with Azure tools.",
+  "id": "seed-40"
+ },
+ {
+  "domain": 2,
+  "stem": "What does an ARM template provide?",
+  "options": [
+   "A network diagram",
+   "Only a VM image",
+   "A declarative JSON file for repeatable deployments",
+   "A billing report"
+  ],
+  "correct": 2,
+  "explanation": "ARM templates describe the resources you want, enabling repeatable infrastructure as code through Azure Resource Manager.",
+  "id": "seed-41"
+ },
+ {
+  "domain": 2,
+  "stem": "Which tool gives personalised recommendations on reliability, security, cost and performance?",
+  "options": [
+   "Pricing calculator",
+   "Resource locks",
+   "Azure Advisor",
+   "Azure Service Health"
+  ],
+  "correct": 2,
+  "explanation": "Azure Advisor analyses your resources and suggests improvements across five pillars.",
+  "id": "seed-42"
+ },
+ {
+  "domain": 2,
+  "stem": "Which service tells you about Azure incidents and planned maintenance that affect your resources?",
+  "options": [
+   "Microsoft Cost Management",
+   "Microsoft Entra ID",
+   "Azure Service Health",
+   "Azure Advisor"
+  ],
+  "correct": 2,
+  "explanation": "Service Health gives a personalised view of Azure service issues, planned maintenance and health advisories.",
+  "id": "seed-43"
+ },
+ {
+  "domain": 2,
+  "stem": "Which Azure Monitor feature tracks requests and detects anomalies in a web application?",
+  "options": [
+   "Application Insights",
+   "Azure Advisor",
+   "Resource locks",
+   "Log Analytics"
+  ],
+  "correct": 0,
+  "explanation": "Application Insights provides application performance monitoring. Log Analytics is for querying log data.",
+  "id": "seed-44"
+ }
+]
