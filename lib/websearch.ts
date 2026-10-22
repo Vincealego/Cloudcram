@@ -13,6 +13,9 @@ export const firstSentences = (t: string, max = 300) => {
   const cut = s.slice(0, max), i = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "));
   return i > 60 ? cut.slice(0, i + 1) : cut.replace(/\s+\S*$/, "") + "…";
 };
+const STOP = new Set(["the", "a", "an", "of", "in", "and", "to", "for", "is", "are", "azure", "microsoft", "with", "on", "what", "how", "does", "do"]);
+export const tokens = (q: string) => cleanQuery(q).toLowerCase().split(/[^a-z0-9+#.]+/).filter(w => w.length > 1 && !STOP.has(w));
+export const relevance = (q: string, text: string) => { const t = tokens(q), h = text.toLowerCase(); return t.length ? t.filter(w => h.includes(w)).length / t.length : 1; };
 const PREFER = /\/(azure|entra|training|credentials|microsoft-365)\//;
 const abs = (u: string) => (u.startsWith("http") ? u : `https://learn.microsoft.com${u}`);
 const get = (url: string, ms: number) => fetch(url, { signal: AbortSignal.timeout(ms), headers: { "user-agent": "CloudCram/1.0 (study app)" } });
@@ -26,7 +29,7 @@ export async function learnItems(q: string): Promise<Item[]> {
     try { text = metaDescription(await (await get(url, 6000)).text()); } catch {}
     return { title: decode(String(x.title).replace(/<[^>]+>/g, "")), url, text: firstSentences(text) };
   }));
-  return items.filter(i => i.text);
+  return items.filter(i => i.text && relevance(q, `${i.title} ${i.text}`) >= 0.5);   // drop off-topic pages
 }
 export async function wikiItems(q: string): Promise<Item[]> {
   const u = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(cleanQuery(q))}&gsrlimit=1&prop=extracts%7Cinfo&inprop=url&exintro=1&explaintext=1&exsentences=3&format=json&origin=*`;

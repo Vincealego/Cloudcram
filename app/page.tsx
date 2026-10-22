@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { CERT } from "@/lib/certs/az900";
 import { accuracy, verdict, type Attempt } from "@/lib/readiness";
@@ -8,12 +8,13 @@ import { review } from "@/lib/srs";
 import { supabase } from "@/lib/supabase";
 import seed from "@/lib/seed.json";
 import offline from "@/lib/buddy-offline.json";
+import { findTopic, type Topic } from "@/lib/buddy";
 
 type Q = { id: string; domain: number; stem: string; options: string[]; correct: number; explanation: string };
 type Card = { qid: string; q: string; a: string; domain: number; box: number; due: string };
 type Src = { url: string; title: string };
 type S = { att: (Attempt & { qid: string; demo?: boolean })[]; cards: Card[]; exam: string; hrs: number };
-const Qs = seed as Q[], KEY = "cloudcram.next.v2", day = 864e5, DC = ["#3b82f6", "#8b5cf6", "#10b981"], DOM = CERT.domains.map(d => d.name);
+const Qs = seed as Q[], KEY = "cloudcram.next.v3", day = 864e5, DC = ["#3b82f6", "#8b5cf6", "#10b981"], DOM = CERT.domains.map(d => d.name);
 const P: Record<string, string> = { quiz: `<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7"/><circle cx="12" cy="17" r=".6"/>`, cards: `<rect x="3" y="7" width="14" height="12" rx="2"/><path d="M7 7V5h14v12h-2"/>`,
   plan: `<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>`, buddy: `<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>`, ready: `<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>`,
   bulb: `<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>`, flame: `<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/>`,
@@ -32,15 +33,15 @@ const Cloud = () => (<svg className="cl" width="132" height="92" viewBox="0 0 13
 function burst(x: number, y: number) { if (matchMedia("(prefers-reduced-motion:reduce)").matches) return; const f = document.getElementById("fx"); if (!f) return;
   for (let i = 0; i < 22; i++) { const e = document.createElement("i"); e.style.cssText = `left:${x}px;top:${y}px;background:${["#3b82f6", "#8b5cf6", "#10b981", "#f59e0b", "#f43f5e"][i % 5]}`; f.appendChild(e);
     const a = Math.random() * 6.28, d = 60 + Math.random() * 90; e.animate([{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d + 60}px) rotate(${Math.random() * 540}deg)`, opacity: 0 }], { duration: 900 + Math.random() * 400 }).onfinish = () => e.remove(); } }
-const init = (): S => ({ att: [[0, 1], [0, 0], [0, 1], [1, 1], [1, 0], [1, 0], [2, 1], [2, 1], [2, 0]].map(([d, c], i) => ({ domain: d, correct: !!c, qid: "demo" + i, demo: true })),
-  cards: [{ qid: "seed-4", q: Qs[4].stem, a: Qs[4].options[Qs[4].correct], domain: Qs[4].domain, box: 0, due: new Date(0).toISOString() }],
-  exam: new Date(Date.now() + 21 * day).toISOString().slice(0, 10), hrs: 6 });
+const init = (): S => ({ att: [], cards: [], exam: new Date(Date.now() + 21 * day).toISOString().slice(0, 10), hrs: 6 });
 
 export default function Page() {
   const [s, setS] = useState<S>(init), [tab, setTab] = useState("quiz"), [q, setQ] = useState<Q | null>(null), [pick, setPick] = useState<number | null>(null);
   const [user, setUser] = useState<User | null>(null), [msg, setMsg] = useState(""), [ask, setAsk] = useState(""), [persona, setPersona] = useState("a friendly tutor");
   const [chat, setChat] = useState<{ r: "u" | "b"; t: string; src?: Src[]; typing?: boolean }[]>([{ r: "b", t: "Hi! I explain Azure in simple terms with everyday examples like M-Pesa and data bundles, and I can check Microsoft Learn for anything new. Ask me anything." }]);
 
+  const [mode, setMode] = useState<"in" | "up">("up"), [health, setHealth] = useState<{ ai?: boolean; ollama?: boolean }>({}), sRef = useRef(s); sRef.current = s;
+  useEffect(() => { fetch("/api/health").then(r => r.json()).then(setHealth).catch(() => {}); }, []);
   useEffect(() => { try { const v = localStorage.getItem(KEY), t = localStorage.getItem(KEY + "t"); if (v) setS(JSON.parse(v)); if (t) document.documentElement.dataset.theme = t; } catch {} }, []);
   useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }, [s]);
   useEffect(() => { if (!supabase) return; supabase.auth.getUser().then(r => setUser(r.data.user));
@@ -50,7 +51,12 @@ export default function Page() {
       supabase!.from("cards").select("question_id,box,due").eq("user_id", user.id), supabase!.from("profiles").select("exam_date,weekly_hours").eq("id", user.id).maybeSingle()]);
     const att = (a.data ?? []).map(x => ({ domain: x.domain, correct: x.correct, qid: x.question_id }));
     const cards = (c.data ?? []).flatMap(x => { const k = Qs.find(z => z.id === x.question_id); return k ? [{ qid: k.id, q: k.stem, a: k.options[k.correct], domain: k.domain, box: x.box, due: x.due }] : []; });
-    setS(o => ({ ...o, att, cards, exam: p.data?.exam_date ?? o.exam, hrs: p.data?.weekly_hours ?? o.hrs })); setQ(null); setMsg("Progress loaded from your account."); })(); }, [user]);
+    const loc = sRef.current;
+    if (!att.length && loc.att.length) { // first sign-in: keep what the guest already did and save it to the account
+      await supabase!.from("attempts").insert(loc.att.map(a => ({ user_id: user.id, question_id: a.qid, domain: a.domain, correct: a.correct })));
+      if (loc.cards.length) await supabase!.from("cards").upsert(loc.cards.map(c => ({ user_id: user.id, question_id: c.qid, box: c.box, due: c.due })));
+      setMsg("Your progress is now saved to your account."); return; }
+    setS(o => ({ ...o, att, cards, exam: p.data?.exam_date ?? o.exam, hrs: p.data?.weekly_hours ?? o.hrs })); setQ(null); setMsg(att.length ? "Progress loaded from your account." : ""); })(); }, [user]);
   useEffect(() => { if (supabase && user) supabase.from("profiles").upsert({ id: user.id, exam_date: s.exam, weekly_hours: s.hrs }).then(); }, [s.exam, s.hrs, user]);
   useEffect(() => { if (!q) nextQ(); }, [s.att.length, q]);
   useEffect(() => { const c = document.querySelector(".chat"); if (c) c.scrollTop = c.scrollHeight; }, [chat]);
@@ -77,14 +83,28 @@ export default function Page() {
   function grade(good: boolean) { const c = due[0]; if (!c) return; const r = review(c.box, good); setFlip(false);
     setS(p => ({ ...p, cards: p.cards.map(x => x.qid === c.qid ? { ...x, ...r } : x) }));
     if (supabase && user) supabase.from("cards").upsert({ user_id: user.id, question_id: c.qid, ...r }).then(); }
-  async function buddy(t = ask) {
-    if (!t.trim()) return; setAsk(""); setChat(c => [...c, { r: "u", t }, { r: "b", t: "", typing: true }]); let out: string, src: Src[] = [];
-    try { const r = await fetch("/api/buddy", { method: "POST", body: JSON.stringify({ question: t, persona }) }); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error ?? "request failed"); out = j.answer; src = j.sources ?? []; }
-    catch (e) { const v = t.toLowerCase(), m = offline.find(b => b.keys.some(k => v.includes(k))); out = m ? `${m.title}: ${m.text}` : ((e as Error).message === "no_key" ? "No AI key found. Add ANTHROPIC_API_KEY to .env.local, then stop and restart the server. Until then I only have the offline library." : `The AI request failed: ${(e as Error).message}. Check your key, your API billing credit, and that web search is enabled in the Anthropic Console.`); }
-    setChat(c => [...c.slice(0, -1), { r: "b", t: out, src }]);
+  async function buddy(t = ask, fallback?: string) {
+    if (!t.trim()) return; setAsk("");
+    const more: Src[] = [{ url: `https://learn.microsoft.com/en-us/search/?terms=${encodeURIComponent(t.slice(0, 120))}`, title: "Search Microsoft Learn for more" }];
+    setChat(c => [...c, { r: "u", t }, { r: "b", t: "", typing: true }]);
+    const reply = (text: string, src: Src[] = more) => setChat(c => [...c.slice(0, -1), { r: "b", t: text, src }]);
+    const m = fallback ? null : findTopic(t, offline as Topic[]);          // library first: instant and curated
+    if (m) { await new Promise(r => setTimeout(r, 400)); return reply(`${m.title}: ${m.text}`); }
+    try { const r = await fetch("/api/buddy", { method: "POST", body: JSON.stringify({ question: t, persona }) }); const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error ?? "request failed");
+      if (fallback && j.mode === "search") return reply(fallback);
+      reply(j.answer, j.sources?.length ? j.sources : more);
+    } catch (e) { const msg = (e as Error).message;
+      reply(fallback ?? (msg === "no_key" ? "I couldn’t find a good match in my library or in a live web search. Try rephrasing (for example “what is vertical scaling?”) or use the link below."
+        : `The AI request failed: ${msg}. Check your key, your API billing credit, and that web search is enabled in the Anthropic Console.`)); }
   }
-  async function signIn(email: string) { if (!supabase) return setMsg("Add your Supabase keys to .env.local to enable accounts. Until then progress saves in this browser.");
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin } }); setMsg(error ? error.message : "Check your email for the sign-in link."); }
+  async function auth(m: "in" | "up", email: string, password: string) {
+    if (!supabase) return setMsg("Accounts aren’t switched on for this site yet. The site owner needs to add the Supabase settings.");
+    const { data, error } = m === "up" ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: location.origin } }) : await supabase.auth.signInWithPassword({ email, password });
+    if (error) return setMsg(error.message);
+    if (m === "up" && !data.session) return setMsg("Account created. Check your email to confirm it, then sign in.");
+    setMsg(m === "up" ? "Account created. You’re signed in." : "Signed in."); setTab("quiz");
+  }
   const theme = () => { const r = document.documentElement, dk = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme:dark)").matches; r.dataset.theme = dk ? "light" : "dark"; try { localStorage.setItem(KEY + "t", r.dataset.theme); } catch {} };
 
   const acc = accuracy(s.att), p = plan(s.att, s.exam, s.hrs), v = verdict(s.att), ov = s.att.length ? Math.round(100 * s.att.filter(a => a.correct).length / s.att.length) : 0;
@@ -96,19 +116,19 @@ export default function Page() {
 
   return (<>
     <div className="hero"><button className="tg" onClick={theme} aria-label="Toggle theme"><Ic n="moon" s={18} /></button>
-      <div className="hr"><div><h1>Cloud<span>Cram</span></h1><small>{CERT.name}</small><small style={{ opacity: .75, fontSize: 12 }}>{user ? `Saved to ${user.email}` : "Demo mode: saved in this browser"}</small></div><Cloud /></div>
-      <div className="pills"><span><Ic n="flame" s={14} /> {st} streak</span><span>{due.length} cards due</span><span>Level {1 + Math.floor(real / 5)}<span className="xp"><i style={{ width: `${(real % 5) * 20}%` }} /></span></span></div></div>
+      <div className="hr"><div><h1>Cloud<span>Cram</span></h1><small>{CERT.name}</small><small style={{ opacity: .75, fontSize: 12 }}>{user ? `Saved to ${user.email}` : "Guest: progress saved in this browser"}</small></div><Cloud /></div>
+      <div className="pills"><span><Ic n="flame" s={14} /> {st} streak</span><span>{due.length} cards due</span><span>Level {1 + Math.floor(real / 5)}<span className="xp"><i style={{ width: `${(real % 5) * 20}%` }} /></span></span><button className="pb" onClick={() => setTab("account")}>{user ? "Account" : "Sign in"}</button></div></div>
     {msg && <p role="status" className="tip glass">{msg}</p>}
     <div key={tab} className="in">
-      {tab === "quiz" && q && <><div className="tip glass"><Ic n="star" s={18} /><span>Focus area: <b>{wk.name}</b> ({wk.p === null ? "–" : Math.round(wk.p * 100) + "%"})</span></div>
+      {tab === "quiz" && q && <>{s.att.length > 0 && <div className="tip glass"><Ic n="star" s={18} /><span>Focus area: <b>{wk.name}</b> ({wk.p === null ? "–" : Math.round(wk.p * 100) + "%"})</span></div>}
         <div key={q.id} className="card glass q in" style={{ ["--a" as string]: DC[q.domain] }}>
           <div className="top"><span className="chip" style={{ background: DC[q.domain] }}>{DOM[q.domain]}</span><span className="dots">{s.att.slice(-10).map((a, i) => <i key={i} className={a.correct ? "g" : "r"} />)}</span></div>
           <h2>{q.stem}</h2>
           {q.options.map((o, i) => <button key={i} className={`opt ${pick === null ? "" : i === q.correct ? "ok" : i === pick ? "no" : "dim"}`} onClick={e => answer(i, e)}>
             <b>{pick !== null && i === q.correct ? <Ic n="check" s={16} /> : pick === i ? <Ic n="x" s={16} /> : "ABCD"[i]}</b>{o}</button>)}
           {pick !== null && <div className="ex"><h3 style={{ display: "flex", gap: 6, alignItems: "center", color: `var(--${pick === q.correct ? "ok" : "no"})` }}><Ic n="bulb" s={18} />{pick === q.correct ? "Correct!" : "Not quite. Added to your flashcards."}</h3><p>{q.explanation}</p>
-            <div className="row"><button className="pri" onClick={() => nextQ()}>Next question →</button><button className="btn" onClick={genAI}>AI question</button>
-              <button className="btn" onClick={() => { setTab("buddy"); buddy(`Explain this AZ-900 question simply and check it against Microsoft Learn: ${q.stem} Correct answer: ${q.options[q.correct]}`); }}>Ask buddy</button></div></div>}
+            <div className="row"><button className="pri" onClick={() => nextQ()}>Next question →</button>{health.ai && <button className="btn" onClick={genAI}>AI question</button>}
+              <button className="btn" onClick={() => { setTab("buddy"); const rel = findTopic(`${q.stem} ${q.options[q.correct]}`, offline as Topic[]); buddy(`Explain this AZ-900 question simply and check it against Microsoft Learn: ${q.stem} Correct answer: ${q.options[q.correct]}`, `Why “${q.options[q.correct]}” is correct: ${q.explanation}${rel ? `\n\nRelated concept (${rel.title}): ${rel.text}` : ""}`); }}>Ask buddy</button></div></div>}
         </div></>}
       {tab === "cards" && <><div className="card glass"><div className="top" style={{ margin: "0 0 8px" }}><b>Mastered</b><span className="mu">{mastered} / {s.cards.length} cards</span></div>
         <div className="bar"><i style={{ width: `${s.cards.length ? 100 * mastered / s.cards.length : 0}%`, background: "linear-gradient(90deg,#34d399,#14b8a6)" }} /></div><p className="mu">Right answers return after 1, 2, 4, then 8 days. A miss resets the card.</p></div>
@@ -125,17 +145,24 @@ export default function Page() {
           <div><b>{new Date(Date.now() + d.day * day).toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}</b><p>{d.task}</p><p className="mu"><Ic n="clock" s={13} /> ~{d.minutes} min</p></div></div>; })}</div></>}
       {tab === "buddy" && <><div className="card glass"><div className="chat">{chat.map((m, i) => <div key={i} className={`m ${m.r}`}>{m.r === "b" && <span className="av"><Ic n="buddy" s={17} /></span>}
         <p>{m.typing ? <span className="ty"><i /><i /><i /></span> : m.t}{m.src?.length ? <span style={{ display: "block", marginTop: 8, fontSize: 12 }}>{m.src.map(x => <a key={x.url} href={x.url} target="_blank" rel="noreferrer" style={{ display: "block" }}>{x.title}</a>)}</span> : null}</p></div>)}</div></div>
-        <div className="chips">{offline.map(b => <button key={b.title} onClick={() => buddy(b.title)}>{b.title}</button>)}</div>
-        <select value={persona} onChange={e => setPersona(e.target.value)} aria-label="Persona" style={{ width: "100%", marginBottom: 8 }}>{["a friendly tutor", "a small-shop owner explaining to a customer", "a student talking to a classmate"].map(x => <option key={x}>{x}</option>)}</select>
+        <div className="chips">{offline.slice(0, 16).map(b => <button key={b.title} onClick={() => buddy(b.title)}>{b.title}</button>)}</div>
+        {(health.ai || health.ollama) && <select value={persona} onChange={e => setPersona(e.target.value)} aria-label="Persona" style={{ width: "100%", marginBottom: 8 }}>{["a friendly tutor", "a small-shop owner explaining to a customer", "a student talking to a classmate"].map(x => <option key={x}>{x}</option>)}</select>}
         <div className="row"><input placeholder="Ask anything about Azure…" value={ask} onChange={e => setAsk(e.target.value)} onKeyDown={e => e.key === "Enter" && buddy()} style={{ flex: 1, minWidth: 0 }} /><button className="pri" onClick={() => buddy()} aria-label="Send"><Ic n="send" s={18} /></button></div></>}
+      {tab === "account" && (user ? <div className="card glass"><h2>Your account</h2><p className="mu">Signed in as {user.email}. Your answers, flashcards and study plan are saved to your account and follow you to any device.</p><button className="btn" onClick={() => supabase?.auth.signOut()}>Sign out</button></div>
+        : <form className="card glass" onSubmit={e => { e.preventDefault(); const f = new FormData(e.currentTarget); auth(mode, f.get("email") as string, f.get("password") as string); }}>
+          <h2>{mode === "up" ? "Create your account" : "Welcome back"}</h2><p className="mu">Save your progress and use CloudCram on any device.</p>
+          {!supabase && <p className="tip glass">Accounts aren’t switched on for this site yet.</p>}
+          <input name="email" type="email" required autoComplete="email" placeholder="Email" style={{ width: "100%", marginBottom: 10 }} />
+          <input name="password" type="password" required minLength={6} autoComplete={mode === "up" ? "new-password" : "current-password"} placeholder="Password (6+ characters)" style={{ width: "100%", marginBottom: 12 }} />
+          <button className="pri" style={{ width: "100%" }}>{mode === "up" ? "Create account" : "Sign in"}</button>
+          <p className="mu" style={{ textAlign: "center" }}>{mode === "up" ? "Already have an account? " : "New here? "}<a href="#" onClick={e => { e.preventDefault(); setMode(mode === "up" ? "in" : "up"); }}>{mode === "up" ? "Sign in" : "Create one"}</a></p></form>)}
       {tab === "ready" && <><div className="card glass" style={{ textAlign: "center" }}><Gauge p={ov} /><span className={`vd ${vc}`}>{vt}</span><p>{v.msg}</p></div>
         <div className="grid" style={{ marginBottom: 14 }}>{acc.map(a => <div key={a.id} className="glass stat"><Ring p={Math.round((a.p ?? 0) * 100)} c={DC[a.id]} t={a.p === null ? "–" : undefined} />
           <p style={{ fontSize: 12, fontWeight: 700, margin: "8px 0 2px", lineHeight: 1.25 }}>{a.name}</p><span className="mu" style={{ fontSize: 11 }}>{a.n} answered · {Math.round(a.weight * 100)}% of exam</span></div>)}</div>
         <div className="card glass"><div className="top" style={{ margin: "0 0 8px" }}><b>Question bank explored</b><span className="mu">{seen} / {Qs.length}</span></div><div className="bar"><i style={{ width: `${100 * seen / Qs.length}%`, background: "linear-gradient(90deg,#3b82f6,#8b5cf6)" }} /></div></div>
-        <p className="mu">Practice % is not your exam score. The real AZ-900 passing score is 700 on a scale of 1–1000; our 80% rule is a study heuristic.{!user && " The first 9 answers are labelled demo data."}</p>
-        {user ? <div className="card glass row" style={{ justifyContent: "space-between" }}><span className="mu">Signed in as {user.email}</span><button className="btn" onClick={() => supabase?.auth.signOut()}>Sign out</button></div>
-          : <><form className="card glass row" onSubmit={e => { e.preventDefault(); signIn(new FormData(e.currentTarget).get("email") as string); }}><input name="email" type="email" required placeholder="Email to save progress" style={{ flex: 1, minWidth: 0 }} /><button className="pri">Sign in</button></form>
-            <button className="btn" onClick={() => { if (confirm("Reset all progress to demo data?")) { setS(init()); setQ(null); } }}>Reset demo data</button></>}</>}
+        <p className="mu">Practice % is not your exam score. The real AZ-900 passing score is 700 on a scale of 1–1000; our 80% rule is a study heuristic.</p>
+        {!user && <><div className="card glass row" style={{ justifyContent: "space-between" }}><span className="mu">Sign in to keep your progress on any device.</span><button className="pri" onClick={() => setTab("account")}>Sign in</button></div>
+          <button className="btn" onClick={() => { if (confirm("Reset my progress on this device?")) { setS(init()); setQ(null); } }}>Reset my progress</button></>}</>}
     </div>
     <nav className="glass">{tabs.map(([k, l]) => <button key={k} className={tab === k ? "on" : ""} aria-label={l} onClick={() => setTab(k)}><Ic n={k} s={21} />{l}</button>)}</nav>
   </>);

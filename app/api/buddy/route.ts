@@ -19,6 +19,7 @@ async function ollama(question: string, persona: string, ctx: string) {
   return ((await r.json()) as any).message?.content?.trim() || null;
 }
 async function keyless(question: string, persona: string) {
+  if (question.length > 200) return null;                 // long prompts (e.g. quiz explanations) aren’t web-search queries
   let items: Item[] = await learnItems(question).catch(() => []);
   if (!items.length) items = await wikiItems(question).catch(() => []);
   if (!items.length) return null;

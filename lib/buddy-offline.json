@@ -4,6 +4,9 @@
    "iaas",
    "paas",
    "saas",
+   "infrastructure as a service",
+   "platform as a service",
+   "software as a service",
    "service model"
   ],
   "title": "IaaS, PaaS, SaaS",
@@ -11,17 +14,21 @@
  },
  {
   "keys": [
-   "shared",
-   "responsib"
+   "shared responsibility",
+   "responsibility model",
+   "who is responsible"
   ],
   "title": "Shared responsibility",
   "text": "A landlord secures the building and the gate, but you lock your own shop door. In the cloud, Microsoft secures the datacenters; you always stay responsible for your data, accounts and access. How much else you manage depends on IaaS, PaaS or SaaS."
  },
  {
   "keys": [
-   "opex",
    "capex",
-   "consumption",
+   "opex",
+   "capital expenditure",
+   "operational expenditure",
+   "consumption based",
+   "consumption model",
    "pay as you go"
   ],
   "title": "CapEx vs OpEx",
@@ -29,18 +36,10 @@
  },
  {
   "keys": [
-   "elastic",
-   "scal"
-  ],
-  "title": "Elasticity and scalability",
-  "text": "A market trader hires extra helpers on market day and sends them home afterwards. Elasticity does that automatically for your app: more capacity during a rush, less when it’s quiet, so you only pay for what you need."
- },
- {
-  "keys": [
-   "zone",
    "region",
-   "availability",
-   "redundan"
+   "availability zone",
+   "datacenter",
+   "data center"
   ],
   "title": "Regions and Availability Zones",
   "text": "A bakery with kitchens in separate parts of town can keep selling if one loses power. A region is a city-sized area; Availability Zones are separate datacenters inside it, each with its own power and cooling."
@@ -48,7 +47,9 @@
  {
   "keys": [
    "blob",
-   "storage"
+   "blob storage",
+   "object storage",
+   "unstructured data"
   ],
   "title": "Blob Storage",
   "text": "A big storeroom where you keep boxes of different shapes: photos, videos, PDFs. Blob Storage holds unstructured files like these, while a database is more like an organised ledger book."
@@ -56,16 +57,22 @@
  {
   "keys": [
    "entra",
+   "entra id",
+   "azure active directory",
+   "azure ad",
    "identity",
-   "mfa",
    "sso",
-   "active directory"
+   "single sign on",
+   "mfa",
+   "multifactor",
+   "multi factor"
   ],
   "title": "Microsoft Entra ID",
   "text": "Your M-Pesa PIN plus the SMS confirmation is a good picture of multifactor authentication: two different proofs it’s really you. Entra ID is the cloud identity service that checks who people are and what they may access."
  },
  {
   "keys": [
+   "azure policy",
    "policy",
    "governance",
    "compliance"
@@ -75,7 +82,10 @@
  },
  {
   "keys": [
-   "lock"
+   "resource lock",
+   "lock",
+   "delete lock",
+   "cannotdelete"
   ],
   "title": "Resource locks",
   "text": "A padlock on the cash box: even people with the key to the shop can’t accidentally empty it. A resource lock stops accidental deletion or change, even by users who have permission."
@@ -83,6 +93,8 @@
  {
   "keys": [
    "serverless",
+   "azure functions",
+   "function app",
    "function"
   ],
   "title": "Serverless / Azure Functions",
@@ -90,45 +102,45 @@
  },
  {
   "keys": [
-   "hybrid",
+   "public cloud",
    "private cloud",
-   "public cloud"
+   "hybrid cloud",
+   "hybrid",
+   "multicloud",
+   "multi cloud",
+   "cloud model"
   ],
   "title": "Public, private, hybrid",
   "text": "A public cloud is like using M-Pesa agents everyone shares. A private cloud is a till kept only in your own shop. Hybrid is both: sensitive records stay in your own till, while busy-season sales go through the shared agents."
  },
  {
   "keys": [
-   "pair",
-   "sovereign",
-   "hierarchy",
-   "subscription",
+   "region pair",
+   "paired region",
+   "sovereign region",
    "management group",
-   "resource group"
+   "subscription",
+   "resource group",
+   "hierarchy",
+   "scope"
   ],
   "title": "Regions and scopes",
   "text": "Think of a supermarket chain: each branch is a region, and two sister branches are a region pair that take turns closing for maintenance. Scopes nest like the company, then a regional office, then a department: management group, subscription, resource group."
  },
  {
   "keys": [
-   "vnet",
-   "virtual network",
-   "expressroute",
-   "vpn",
-   "peering",
-   "endpoint"
-  ],
-  "title": "Networking",
-  "text": "A virtual network is your private compound. Peering is a gate between two compounds, a VPN is a trusted tunnel through the public road, and ExpressRoute is your own private road. A private endpoint is a side door only your staff can use."
- },
- {
-  "keys": [
-   "tier",
+   "access tier",
+   "hot tier",
+   "cool tier",
+   "cold tier",
+   "archive tier",
+   "archive",
    "lrs",
    "zrs",
    "grs",
-   "archive",
-   "redundan"
+   "gzrs",
+   "redundancy",
+   "storage redundancy"
   ],
   "title": "Storage tiers and copies",
   "text": "Hot is goods on the shop counter, cool is the back shelf, archive is the locked warehouse that takes hours to open. Redundancy is keeping copies: LRS in one room, ZRS in several buildings, GRS in another town."
@@ -136,31 +148,356 @@
  {
   "keys": [
    "zero trust",
-   "defense",
-   "defence",
-   "defender",
+   "defense in depth",
+   "defence in depth",
    "rbac",
-   "role"
+   "role based access control",
+   "least privilege"
   ],
   "title": "Security basics",
   "text": "Zero Trust is a guard who checks every ID, every time, even for regulars. Defense in depth is the gate, the door, the safe and the CCTV together. RBAC gives the cashier a till key but not the safe key."
  },
  {
   "keys": [
-   "tag",
-   "reservation",
-   "cost",
+   "=azure",
+   "=cloud",
+   "what is azure",
+   "microsoft azure",
+   "cloud computing",
+   "what is cloud computing",
+   "the cloud"
+  ],
+  "title": "What is Azure and cloud computing",
+  "text": "Cloud computing means renting computing power, storage and software over the internet instead of owning the hardware. Microsoft Azure is Microsoft’s cloud platform, with hundreds of services you pay for as you use them. Think of mobile data bundles: you don’t build the network, you just buy what you need."
+ },
+ {
+  "keys": [
+   "vertical scaling",
+   "scale up",
+   "scaling up",
+   "vertical scale"
+  ],
+  "title": "Vertical scaling (scale up)",
+  "text": "Vertical scaling makes one resource bigger or smaller, for example giving a virtual machine more CPU and memory. It’s simple, but there is an upper limit and it can involve downtime. It’s like replacing a small shop fridge with a bigger one."
+ },
+ {
+  "keys": [
+   "horizontal scaling",
+   "scale out",
+   "scaling out",
+   "scale in",
+   "horizontal scale"
+  ],
+  "title": "Horizontal scaling (scale out)",
+  "text": "Horizontal scaling adds or removes copies of a resource, such as extra VMs behind a load balancer. It copes with big demand and improves availability. It’s like opening more till points instead of buying one bigger till."
+ },
+ {
+  "keys": [
+   "scalability",
+   "scaling",
+   "scalable"
+  ],
+  "title": "Scalability",
+  "text": "Scalability is the ability to handle more or less demand by changing resources. You can scale vertically (a bigger machine) or horizontally (more machines), manually or automatically."
+ },
+ {
+  "keys": [
+   "elasticity",
+   "elastic",
+   "autoscale",
+   "autoscaling"
+  ],
+  "title": "Elasticity",
+  "text": "Elasticity means resources grow and shrink automatically as demand changes, so you only pay for what you use. It’s like a market trader who hires extra helpers on market day and sends them home afterwards."
+ },
+ {
+  "keys": [
+   "high availability",
+   "highly available",
+   "availability",
+   "uptime",
+   "sla",
+   "service level agreement"
+  ],
+  "title": "High availability and SLAs",
+  "text": "High availability means a service stays up with minimal downtime. A Service Level Agreement (SLA) states the uptime Microsoft commits to, such as 99.9% or 99.99%. A higher percentage allows less downtime, like a shop promising to open every trading day except a few hours a year."
+ },
+ {
+  "keys": [
+   "reliability",
+   "reliable",
+   "disaster recovery",
+   "fault tolerance",
+   "resilience"
+  ],
+  "title": "Reliability and disaster recovery",
+  "text": "Reliability is a system’s ability to recover from failures and keep working. Fault tolerance keeps it running through a failure, while disaster recovery restores it after a major outage, often using another region. It’s like a backup generator plus a second shop in another town."
+ },
+ {
+  "keys": [
+   "benefits of cloud",
+   "cloud benefits",
+   "predictability",
+   "agility",
+   "manageability",
+   "governance and security"
+  ],
+  "title": "Benefits of the cloud",
+  "text": "Key benefits are high availability, scalability, elasticity, agility (deploy quickly), reliability, predictability of performance and cost, security and governance, and manageability through automation, templates and monitoring. It’s like topping up airtime instantly instead of building a phone network."
+ },
+ {
+  "keys": [
+   "virtual machine",
+   "vm",
+   "azure vm"
+  ],
+  "title": "Virtual machines",
+  "text": "A virtual machine (VM) is a computer simulated in software and running in Azure. You pick the size and operating system, and you manage the OS and patches (IaaS). It suits lift-and-shift and custom setups, like renting an empty office and bringing your own desks and staff."
+ },
+ {
+  "keys": [
+   "scale set",
+   "vmss",
+   "availability set",
+   "fault domain",
+   "update domain"
+  ],
+  "title": "Scale sets and availability sets",
+  "text": "Virtual Machine Scale Sets manage a group of identical VMs and can add or remove them as load changes. Availability sets spread VMs across fault domains and update domains inside a datacenter so one hardware fault or maintenance event doesn’t stop everything. One adds cashiers on busy days; the other places cashiers on separate power lines."
+ },
+ {
+  "keys": [
+   "container",
+   "docker",
+   "aci",
+   "container instances",
+   "aks",
+   "kubernetes",
+   "azure kubernetes service"
+  ],
+  "title": "Containers, ACI and AKS",
+  "text": "Containers package an app with what it needs and share the host operating system, so they are lighter and start faster than VMs. Azure Container Instances runs containers without managing servers, and Azure Kubernetes Service (AKS) manages many containers at scale. Think pre-packed lunch boxes any canteen can serve."
+ },
+ {
+  "keys": [
+   "app service",
+   "web app",
+   "azure app service"
+  ],
+  "title": "Azure App Service",
+  "text": "Azure App Service is a PaaS for hosting web apps and APIs. You deploy your code and Azure manages the servers, OS and scaling. It’s like a stall in a market hall where the owner supplies electricity and security."
+ },
+ {
+  "keys": [
+   "virtual desktop",
+   "avd",
+   "azure virtual desktop"
+  ],
+  "title": "Azure Virtual Desktop",
+  "text": "Azure Virtual Desktop delivers Windows desktops and apps from the cloud to almost any device. Staff get their usual desktop even from a basic laptop, like logging into your office computer from an internet café."
+ },
+ {
+  "keys": [
+   "virtual network",
+   "vnet",
+   "subnet"
+  ],
+  "title": "Virtual networks",
+  "text": "An Azure Virtual Network (VNet) is your private, isolated network in Azure, split into subnets. Resources inside can talk to each other, the internet and on-premises networks securely. It’s like a fenced compound with separate rooms."
+ },
+ {
+  "keys": [
+   "vnet peering",
+   "virtual network peering",
+   "peering",
+   "vpn",
+   "vpn gateway",
+   "expressroute",
+   "express route"
+  ],
+  "title": "Peering, VPN and ExpressRoute",
+  "text": "VNet peering links two virtual networks privately over Microsoft’s backbone. A VPN Gateway sends encrypted traffic over the public internet to link on-premises with Azure, while ExpressRoute uses a private connection through a provider that bypasses the public internet. Think a gate between two compounds, a tunnel through the public road, and your own private road."
+ },
+ {
+  "keys": [
+   "load balancer",
+   "load balancing",
+   "application gateway",
+   "azure dns",
+   "dns"
+  ],
+  "title": "Load balancing and DNS",
+  "text": "A load balancer spreads incoming traffic across several servers so none is overloaded, and Application Gateway does this for web traffic with smarter routing. Azure DNS hosts your domain names. It’s like a queue marshal sending shoppers to the shortest till."
+ },
+ {
+  "keys": [
+   "network security group",
+   "nsg",
+   "azure firewall",
+   "firewall",
+   "bastion",
+   "azure bastion",
+   "private endpoint"
+  ],
+  "title": "Network security tools",
+  "text": "A network security group (NSG) allows or denies traffic to resources with simple rules, and Azure Firewall is a managed central firewall. Azure Bastion lets you reach VMs through the browser without exposing them to the internet, and a private endpoint gives a service a private IP in your network. Think gate guards, a main security post, a staff-only entrance and a side door."
+ },
+ {
+  "keys": [
+   "azure storage",
+   "storage account",
+   "queue storage",
+   "table storage",
+   "azure files",
+   "file share",
+   "managed disk",
+   "disk storage"
+  ],
+  "title": "Azure Storage services",
+  "text": "Azure Storage offers blobs (objects and files), Azure Files (SMB or NFS file shares), queues (messages between apps), tables (simple NoSQL data) and managed disks (disks for VMs). Like a storeroom, a shared office folder, a message tray, a simple ledger and each computer’s hard drive."
+ },
+ {
+  "keys": [
+   "cosmos db",
+   "azure cosmos db",
+   "azure sql",
+   "sql database",
+   "azure sql database",
+   "database",
+   "nosql"
+  ],
+  "title": "Databases: SQL and Cosmos DB",
+  "text": "Azure SQL Database is a managed relational (SQL) database. Azure Cosmos DB is a globally distributed NoSQL database for fast, flexible data. Both are PaaS, so Azure handles patching and backups. Think an organised ledger book versus a flexible notice board copied in many towns."
+ },
+ {
+  "keys": [
+   "azcopy",
+   "data box",
+   "file sync",
+   "azure migrate",
+   "storage explorer",
+   "migration",
+   "migrate"
+  ],
+  "title": "Migration and data transfer",
+  "text": "Azure Migrate discovers, assesses and moves on-premises servers, databases and apps to Azure. Azure Data Box is a shipped device for huge offline transfers, AzCopy copies data over the network from the command line, and Azure File Sync keeps on-premises file servers in step with Azure Files."
+ },
+ {
+  "keys": [
+   "azure resource manager",
+   "arm",
+   "arm template",
+   "bicep",
+   "infrastructure as code",
+   "iac"
+  ],
+  "title": "Azure Resource Manager and templates",
+  "text": "Azure Resource Manager (ARM) is the management layer used to deploy and manage Azure resources. ARM templates (JSON) and Bicep describe what you want, so deployments are repeatable: infrastructure as code. It’s like a written recipe so every branch cooks the same dish."
+ },
+ {
+  "keys": [
+   "azure portal",
+   "portal",
+   "cloud shell",
+   "azure cli",
+   "cli",
+   "powershell",
+   "azure powershell",
+   "command line"
+  ],
+  "title": "Portal, CLI and Cloud Shell",
+  "text": "You can manage Azure from the Azure portal (web), Azure CLI and Azure PowerShell (commands), or Azure Cloud Shell, a browser-based terminal with both. Same shop, different doors."
+ },
+ {
+  "keys": [
+   "azure arc",
+   "arc",
+   "hybrid management"
+  ],
+  "title": "Azure Arc",
+  "text": "Azure Arc extends Azure management to servers, Kubernetes clusters and data services running on-premises or in other clouds, giving one control panel for branches everywhere."
+ },
+ {
+  "keys": [
+   "azure monitor",
+   "monitor",
+   "monitoring",
+   "log analytics",
+   "application insights",
+   "alert"
+  ],
+  "title": "Azure Monitor",
+  "text": "Azure Monitor collects and analyses data from your apps and resources. Log Analytics lets you query logs, Application Insights tracks the performance of web apps, and alerts notify you when something goes wrong. Think CCTV, a logbook and an alarm for your shop."
+ },
+ {
+  "keys": [
+   "azure advisor",
    "advisor",
    "service health",
-   "monitor",
-   "arc",
-   "arm",
-   "iac",
-   "template",
-   "cli",
-   "purview"
+   "azure service health",
+   "resource health"
   ],
-  "title": "Cost, tools and monitoring",
-  "text": "Tags are labels on your stock boxes so you know which department spent what. Reservations are like prepaying a year of airtime for a discount. Azure Advisor is a friendly consultant, Service Health tells you about outages, and ARM templates are your written recipe so every branch opens identically."
+  "title": "Advisor and Service Health",
+  "text": "Azure Advisor gives personalised recommendations on reliability, security, cost, performance and operational excellence. Azure Service Health tells you about Azure incidents and planned maintenance affecting you. One is a friendly consultant, the other is the weather forecast for your business."
+ },
+ {
+  "keys": [
+   "pricing calculator",
+   "tco calculator",
+   "total cost of ownership",
+   "cost management",
+   "cost estimate",
+   "reservation",
+   "reserved instance",
+   "budget"
+  ],
+  "title": "Cost tools",
+  "text": "The Pricing calculator estimates the cost of services you plan to use, while the TCO calculator compares on-premises costs with Azure. Microsoft Cost Management analyses spending and sets budgets and alerts, and Reservations give a discount for one- or three-year commitments. Like pricing a shop fit-out first, then tracking the monthly bills."
+ },
+ {
+  "keys": [
+   "tag",
+   "cost factors",
+   "what affects cost"
+  ],
+  "title": "Tags and cost factors",
+  "text": "Costs depend on resource type, usage, region, bandwidth and the pricing model you pick. Tags are name-value labels that organise resources and group costs by department or project, like labels on stock boxes."
+ },
+ {
+  "keys": [
+   "purview",
+   "microsoft purview",
+   "data governance",
+   "service trust portal"
+  ],
+  "title": "Microsoft Purview",
+  "text": "Microsoft Purview helps you discover, classify and govern data across on-premises, multicloud and SaaS. The Service Trust Portal publishes Microsoft’s compliance and audit documents. Think of a records office that knows where every file is and which are confidential."
+ },
+ {
+  "keys": [
+   "defender for cloud",
+   "microsoft defender",
+   "key vault",
+   "azure key vault",
+   "security posture"
+  ],
+  "title": "Defender for Cloud and Key Vault",
+  "text": "Microsoft Defender for Cloud checks your security posture and protects workloads across Azure and hybrid setups. Azure Key Vault stores secrets, keys and certificates safely. Like a security consultant who audits the shop, plus a strongroom for the keys."
+ },
+ {
+  "keys": [
+   "conditional access",
+   "passwordless",
+   "windows hello",
+   "fido2",
+   "authenticator",
+   "external identities",
+   "b2b",
+   "guest user",
+   "entra domain services",
+   "domain services"
+  ],
+  "title": "Conditional Access, passwordless and guests",
+  "text": "Conditional Access applies if-then rules to sign-ins, such as requiring MFA from an unfamiliar location. Passwordless sign-in uses Windows Hello, FIDO2 keys or the Authenticator app. External identities let partners and guests sign in with their own accounts, and Entra Domain Services provides managed domain join and LDAP without running domain controllers. Like a bouncer who checks more carefully when something looks unusual."
  }
 ]

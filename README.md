@@ -59,3 +59,9 @@ Without Supabase keys the app saves to the browser (localStorage). With keys, si
 
 ## No-key mode (default when ANTHROPIC_API_KEY is empty)
 The Buddy searches Microsoft Learn live, reads each page's summary, and falls back to Wikipedia. Set `OLLAMA_MODEL` to let a free local model write friendlier answers from those results (local machine only).
+
+## Buddy library
+`lib/buddy-offline.json` holds ~43 curated concept explanations (keys + plain-language text + a local example). The Buddy checks it first (whole-word matching in `lib/buddy.ts`, longer keys win), then the AI or live web search for anything else. Add a topic by appending `{keys, title, text}`.
+
+## Accounts
+Email + password sign-up and sign-in (`app/page.tsx`, Account view) using Supabase Auth. Supabase's built-in email sender only reaches your own team and is heavily limited, so for real users either turn **off** "Confirm email" (Authentication, Providers, Email) or set up custom SMTP. Visit `/api/health` on your site to see which settings the server can read.
