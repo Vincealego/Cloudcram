@@ -116,9 +116,14 @@ export default function Page() {
   const tabs: [string, string][] = [["quiz", "Quiz"], ["cards", "Cards"], ["plan", "Plan"], ["buddy", "Buddy"], ["ready", "Ready"]];
 
   return (<>
+    <div className="topbar glass">
+      <span className="tstat"><span className={`live ${user ? "" : "off"}`} />{user ? "Signed in" : "Guest mode"}</span>
+      {user ? <button className="acct" onClick={() => setTab("account")} aria-label="Open my account"><span className="av2">{initials}</span><span className="an"><b>{who}</b><small>{user.email}</small></span></button>
+        : <button className="pri" onClick={() => { setMode("up"); setTab("account"); }}>Sign in or sign up</button>}
+    </div>
     <div className="hero"><button className="tg" onClick={theme} aria-label="Toggle theme"><Ic n="moon" s={18} /></button>
-      <div className="hr"><div><h1>Cloud<span>Cram</span></h1><small>{CERT.name}</small><small style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4, fontSize: 12 }}>{user ? <><span className="av2">{initials}</span><span>Signed in as <b>{who}</b></span></> : <><span className="live off" />Guest · progress saved in this browser</>}</small></div><Cloud /></div>
-      <div className="pills"><span><Ic n="flame" s={14} /> {st} streak</span><span>{due.length} cards due</span><span>Level {1 + Math.floor(real / 5)}<span className="xp"><i style={{ width: `${(real % 5) * 20}%` }} /></span></span><button className="pb" onClick={() => setTab("account")}>{user ? `${initials} · Account` : "Sign in"}</button></div></div>
+      <div className="hr"><div><h1>Cloud<span>Cram</span></h1><small>{CERT.name}</small></div><Cloud /></div>
+      <div className="pills"><span><Ic n="flame" s={14} /> {st} streak</span><span>{due.length} cards due</span><span>Level {1 + Math.floor(real / 5)}<span className="xp"><i style={{ width: `${(real % 5) * 20}%` }} /></span></span></div></div>
     {msg && <p role="status" className="tip glass">{msg}</p>}
     <div key={tab} className="in">
       {tab === "quiz" && q && <>{s.att.length > 0 && <div className="tip glass"><Ic n="star" s={18} /><span>Focus area: <b>{wk.name}</b> ({wk.p === null ? "–" : Math.round(wk.p * 100) + "%"})</span></div>}
