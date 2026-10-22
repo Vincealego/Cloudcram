@@ -98,12 +98,12 @@ export default function Page() {
       reply(fallback ?? (msg === "no_key" ? "I couldn’t find a good match in my library or in a live web search. Try rephrasing (for example “what is vertical scaling?”) or use the link below."
         : `The AI request failed: ${msg}. Check your key, your API billing credit, and that web search is enabled in the Anthropic Console.`)); }
   }
-  async function auth(m: "in" | "up", email: string, password: string) {
+  async function auth(m: "in" | "up", email: string, password: string, name = "") {
     if (!supabase) return setMsg("Accounts aren’t switched on for this site yet. The site owner needs to add the Supabase settings.");
-    const { data, error } = m === "up" ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: location.origin } }) : await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = m === "up" ? await supabase.auth.signUp({ email, password, options: { data: { name }, emailRedirectTo: location.origin } }) : await supabase.auth.signInWithPassword({ email, password });
     if (error) return setMsg(error.message);
     if (m === "up" && !data.session) return setMsg("Account created. Check your email to confirm it, then sign in.");
-    setMsg(m === "up" ? "Account created. You’re signed in." : "Signed in."); setTab("quiz");
+    const nm = name || (data.user?.user_metadata?.name as string) || email.split("@")[0]; setMsg(m === "up" ? `Welcome, ${nm}! Your account is ready.` : `Welcome back, ${nm}!`); setTab("quiz");
   }
   const theme = () => { const r = document.documentElement, dk = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme:dark)").matches; r.dataset.theme = dk ? "light" : "dark"; try { localStorage.setItem(KEY + "t", r.dataset.theme); } catch {} };
 
@@ -112,12 +112,13 @@ export default function Page() {
   let st = 0; for (let i = s.att.length - 1; i >= 0 && s.att[i].correct; i--) st++;
   const wk = [...acc].sort((a, b) => (a.p ?? .5) - (b.p ?? .5))[0], daysLeft = Math.max(0, Math.round((+new Date(s.exam) - Date.now()) / day));
   const vc = v.status === "ready" ? "ok" : v.status === "not_ready" ? "no" : "wn", vt = { ready: "Looking exam-ready", not_ready: "Not exam-ready yet", unknown: "Not enough data yet" }[v.status as "ready"];
+  const who = (user?.user_metadata?.name as string | undefined) || user?.email?.split("@")[0] || "", initials = who.split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase() || "?";
   const tabs: [string, string][] = [["quiz", "Quiz"], ["cards", "Cards"], ["plan", "Plan"], ["buddy", "Buddy"], ["ready", "Ready"]];
 
   return (<>
     <div className="hero"><button className="tg" onClick={theme} aria-label="Toggle theme"><Ic n="moon" s={18} /></button>
-      <div className="hr"><div><h1>Cloud<span>Cram</span></h1><small>{CERT.name}</small><small style={{ opacity: .75, fontSize: 12 }}>{user ? `Saved to ${user.email}` : "Guest: progress saved in this browser"}</small></div><Cloud /></div>
-      <div className="pills"><span><Ic n="flame" s={14} /> {st} streak</span><span>{due.length} cards due</span><span>Level {1 + Math.floor(real / 5)}<span className="xp"><i style={{ width: `${(real % 5) * 20}%` }} /></span></span><button className="pb" onClick={() => setTab("account")}>{user ? "Account" : "Sign in"}</button></div></div>
+      <div className="hr"><div><h1>Cloud<span>Cram</span></h1><small>{CERT.name}</small><small style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4, fontSize: 12 }}>{user ? <><span className="av2">{initials}</span><span>Signed in as <b>{who}</b></span></> : <><span className="live off" />Guest · progress saved in this browser</>}</small></div><Cloud /></div>
+      <div className="pills"><span><Ic n="flame" s={14} /> {st} streak</span><span>{due.length} cards due</span><span>Level {1 + Math.floor(real / 5)}<span className="xp"><i style={{ width: `${(real % 5) * 20}%` }} /></span></span><button className="pb" onClick={() => setTab("account")}>{user ? `${initials} · Account` : "Sign in"}</button></div></div>
     {msg && <p role="status" className="tip glass">{msg}</p>}
     <div key={tab} className="in">
       {tab === "quiz" && q && <>{s.att.length > 0 && <div className="tip glass"><Ic n="star" s={18} /><span>Focus area: <b>{wk.name}</b> ({wk.p === null ? "–" : Math.round(wk.p * 100) + "%"})</span></div>}
@@ -148,10 +149,16 @@ export default function Page() {
         <div className="chips">{offline.slice(0, 16).map(b => <button key={b.title} onClick={() => buddy(b.title)}>{b.title}</button>)}</div>
         {(health.ai || health.ollama) && <select value={persona} onChange={e => setPersona(e.target.value)} aria-label="Persona" style={{ width: "100%", marginBottom: 8 }}>{["a friendly tutor", "a small-shop owner explaining to a customer", "a student talking to a classmate"].map(x => <option key={x}>{x}</option>)}</select>}
         <div className="row"><input placeholder="Ask anything about Azure…" value={ask} onChange={e => setAsk(e.target.value)} onKeyDown={e => e.key === "Enter" && buddy()} style={{ flex: 1, minWidth: 0 }} /><button className="pri" onClick={() => buddy()} aria-label="Send"><Ic n="send" s={18} /></button></div></>}
-      {tab === "account" && (user ? <div className="card glass"><h2>Your account</h2><p className="mu">Signed in as {user.email}. Your answers, flashcards and study plan are saved to your account and follow you to any device.</p><button className="btn" onClick={() => supabase?.auth.signOut()}>Sign out</button></div>
-        : <form className="card glass" onSubmit={e => { e.preventDefault(); const f = new FormData(e.currentTarget); auth(mode, f.get("email") as string, f.get("password") as string); }}>
+      {tab === "account" && (user ? <><div className="card glass" style={{ textAlign: "center" }}><span className="av2 big">{initials}</span><h2 style={{ margin: "10px 0 2px" }}>{who}</h2><p className="mu">{user.email}</p>
+          <p className="mu">Member since {new Date(user.created_at).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })}</p>
+          <div className="grid" style={{ margin: "12px 0 0" }}><div className="stat glass"><b>{s.att.length}</b><span className="mu">answered</span></div><div className="stat glass"><b>{s.cards.length}</b><span className="mu">flashcards</span></div><div className="stat glass"><b>{1 + Math.floor(real / 5)}</b><span className="mu">level</span></div></div></div>
+        <form className="card glass row" onSubmit={async e => { e.preventDefault(); const n = String(new FormData(e.currentTarget).get("name") ?? "").trim(); if (!n) return; const { error } = await supabase!.auth.updateUser({ data: { name: n } }); setMsg(error ? error.message : "Name updated."); }}>
+          <input name="name" defaultValue={who} placeholder="Your name" style={{ flex: 1, minWidth: 0 }} /><button className="btn">Save name</button></form>
+        <button className="btn" onClick={async () => { await supabase?.auth.signOut(); setS(init()); setQ(null); setTab("quiz"); setMsg("You’ve signed out."); }}>Sign out</button></>
+        : <form className="card glass" onSubmit={e => { e.preventDefault(); const f = new FormData(e.currentTarget); auth(mode, f.get("email") as string, f.get("password") as string, String(f.get("name") ?? "").trim()); }}>
           <h2>{mode === "up" ? "Create your account" : "Welcome back"}</h2><p className="mu">Save your progress and use CloudCram on any device.</p>
           {!supabase && <p className="tip glass">Accounts aren’t switched on for this site yet.</p>}
+          {mode === "up" && <input name="name" required autoComplete="name" placeholder="Your name" style={{ width: "100%", marginBottom: 10 }} />}
           <input name="email" type="email" required autoComplete="email" placeholder="Email" style={{ width: "100%", marginBottom: 10 }} />
           <input name="password" type="password" required minLength={6} autoComplete={mode === "up" ? "new-password" : "current-password"} placeholder="Password (6+ characters)" style={{ width: "100%", marginBottom: 12 }} />
           <button className="pri" style={{ width: "100%" }}>{mode === "up" ? "Create account" : "Sign in"}</button>
